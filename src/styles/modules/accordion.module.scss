@@ -1,0 +1,96 @@
+.link {
+    padding: 0;
+    position: fixed;
+    top: 0;
+    width: calc(var(--grid-unit) + 0px);
+    height: 100vh;
+    border-left: 1px solid var(--grid-color);
+    overflow: hidden;
+    z-index: 2000;
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1em;
+
+    color: currentColor;
+    text-decoration: none;
+
+    font-family: "Lug Straight";
+    background-color: var(--accents-1);
+
+    transition: all 100ms cubic-bezier(0.075, 0.82, 0.165, 1);
+    // transition: all 100ms cubic-bezier(0.5, 0, 0, 0.5);
+
+    &[data-name="index"] {
+        border-left: none;
+        left: 0;
+        &[data-position="left"] {
+            left: 0;
+            background-color: var(--ufcb-porche);
+        }
+    }
+    &[data-name="technicals"] {
+        left: calc(100vw - (var(--grid-unit) * 3) + 0px);
+
+        &[data-setting="true"] {
+            left: calc(100vw - var(--drawer-setting-width) - (var(--grid-unit) * 2) - 1px);
+        }
+        &[data-position="left"] {
+            left: calc(var(--grid-unit) * 1 - 0px);
+            background-color: var(--ufcb-porche);
+        }
+    }
+    &[data-name="reports"] {
+        left: calc(100vw - (var(--grid-unit) * 2) + 0px);
+
+        &[data-setting="true"] {
+            left: calc(100vw - var(--drawer-setting-width) - (var(--grid-unit) * 1) - 1px);
+        }
+        &[data-position="left"] {
+            left: calc(var(--grid-unit) * 2 - 0px);
+            background-color: var(--ufcb-porche);
+        }
+    }
+    &[data-name="settings"] {
+        left: calc(100vw - (var(--grid-unit) * 1) - 0px);
+        &[data-position="left"] {
+            left: calc(100vw - var(--drawer-setting-width) - 1px);
+            background-color: var(--ufcb-porche);
+        }
+    }
+
+    &[data-active="false"] {
+        &:hover {
+            background-color: var(--accents-2);
+            z-index: 2001;
+        }
+    }
+
+    .arrow {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: inherit;
+        transition-delay: 100ms;
+        aspect-ratio: 1;
+
+        &[data-position="left"] {
+            transform: rotate(180deg);
+        }
+
+        > div {
+            display: inherit;
+            align-items: inherit;
+            justify-content: inherit;
+
+            width: 66.66%;
+            aspect-ratio: 1;
+            overflow: hidden;
+            border: 1px solid;
+            border-radius: 100%;
+
+            font-size: 2em;
+        }
+    }
+}
