@@ -1,0 +1,18 @@
+.container {
+    position: inherit;
+    background-repeat: repeat;
+
+    &[data-direction="horizontal"] {
+        background-image: var(--bg-grid-horizontal);
+        background-size: var(--bg-grid-horizontal-size);
+        &[data-padding-inline="true"] {
+            padding: 0 var(--site-padding);
+            padding-inline: var(--site-padding);
+        }
+    }
+
+    &[data-direction="vertical"] {
+        background-image: var(--bg-grid-vertical);
+        background-size: var(--bg-grid-vertical-size);
+    }
+}
