@@ -4,7 +4,9 @@ import { useRouter } from "next/router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useOnClickOutside } from "usehooks-ts";
 import NextLink from "next/link";
+
 import { accordionLinks } from "@/libs/config";
+import useFileUpload from "@/hooks/use-file-upload";
 import GlobalSetting from "../GlobalSetting";
 
 export default function AccordionLinks() {
@@ -15,6 +17,8 @@ export default function AccordionLinks() {
     const activeReports = pathname === "/reports";
     const refDrawer = useRef<HTMLDivElement>(null);
     useOnClickOutside(refDrawer, () => setIsSetting(false));
+
+    const { isDragActive } = useFileUpload();
     return (
         <>
             {accordionLinks.map((item, i) => {
@@ -36,11 +40,13 @@ export default function AccordionLinks() {
                         data-active={isActive}
                         data-position={position}
                         data-setting={isSetting}
+                        data-drag-active={isDragActive}
                     >
                         <div className={styles.arrow} data-position={position}>
-                            <div>&larr;</div>
+                            <div data-position={position}>&larr;</div>
                         </div>
                         <div
+                            data-position={position}
                             style={{
                                 transform: "rotate(180deg)",
                                 writingMode: "vertical-rl",
@@ -65,6 +71,7 @@ export default function AccordionLinks() {
                 data-position={isSetting ? "left" : "right"}
                 data-name="settings"
                 data-active={isSetting}
+                data-drag-active={isDragActive}
                 style={{
                     appearance: "none",
                     borderBlock: "none",
@@ -74,9 +81,10 @@ export default function AccordionLinks() {
                 }}
             >
                 <div className={styles.arrow} data-position={isSetting ? "left" : "right"}>
-                    <div>&larr;</div>
+                    <div data-position={isSetting ? "left" : "right"}>&larr;</div>
                 </div>
                 <div
+                    data-position={isSetting ? "left" : "right"}
                     style={{
                         transform: "rotate(180deg)",
                         writingMode: "vertical-rl",
@@ -102,15 +110,13 @@ export default function AccordionLinks() {
                         exit={{ translateX: "100%" }}
                         transition={{ duration: 0.05, type: "tween" }}
                         style={{
-                            width: "calc(var(--drawer-setting-width) - var(--grid-unit) + 1px)",
+                            width: "calc(var(--drawer-setting-width) - var(--accordion-link-width) + 1px)",
                             height: "100vh",
                             position: "fixed",
                             right: 0,
-                            backgroundColor: "var(--ufcb-porche)",
                             zIndex: 2000,
-                            transition: "all 100ms cubic-bezier(0.075, 0.82, 0.165, 1)",
-                            padding: "1em",
-                            borderLeft: "1px solid var(--grid-color)"
+                            borderLeft: "1px solid var(--grid-color)",
+                            backgroundColor: "var(--accents-2)"
                         }}
                     >
                         <GlobalSetting />
