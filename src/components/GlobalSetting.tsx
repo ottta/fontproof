@@ -1,10 +1,22 @@
 import { useTheme } from "next-themes";
+import SectionHeader from "./SectionHeader";
 
 export default function GlobalSetting() {
     const { themes, setTheme, theme } = useTheme();
     return (
         <div>
-            Global Setting
+            <SectionHeader>
+                <div
+                    style={{
+                        fontSize: "2em",
+                        whiteSpace: "nowrap",
+                        overflow: "hidden",
+                        textOverflow: "ellipsis"
+                    }}
+                >
+                    Global Setting
+                </div>
+            </SectionHeader>
             <div>
                 <select value={theme} onChange={(e) => setTheme(e.target.value)}>
                     {themes.map((item, i) => (
