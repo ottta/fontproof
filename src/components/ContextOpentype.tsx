@@ -1,16 +1,23 @@
-import type { PropsWithChildren } from "react";
+import { PropsWithChildren, useMemo } from "react";
 import type { IFont } from "@/types/font";
 import { createContext, useCallback, useEffect, useState } from "react";
 import { load } from "opentype.js";
 import toast from "react-hot-toast";
 import parseNames from "@/libs/opentype/parse-names";
+import ParseGlyphs from "@/libs/opentype/parse-glyphs";
+import parseMetrics from "@/libs/opentype/parse-metrics";
+import nProgress from "nprogress";
+import { IFileReader } from "@/types/files";
+import LayoutState from "./LayoutState";
 import useFileUpload from "@/hooks/use-file-upload";
 
 type ContextOpentypeAttr = {
     fonts: IFont[];
+    processOT: boolean;
 };
 
 export const ContextOpentype = createContext<ContextOpentypeAttr>(undefined!);
+export const ConsumerOpentype = ContextOpentype.Consumer;
 
 function installFontToTheDOM(fonts: IFont[]) {
     return Promise.all(
@@ -33,7 +40,6 @@ function installFontToTheDOM(fonts: IFont[]) {
                         `%c>>> [new] ${newName} - ${loaded.weight} - ${loaded.style} - ${loaded.stretch}.`,
                         `color: #ff00ff;`
                     );
-                    toast.success(`"${item.names.postScriptName}" — Installed`, { duration: 5000 });
                 });
             } catch (error) {
                 console.log(error);
@@ -44,57 +50,87 @@ function installFontToTheDOM(fonts: IFont[]) {
     );
 }
 
-type ProviderOpentypeProps = PropsWithChildren<{}>;
-export default function ProviderOpentype(props: ProviderOpentypeProps) {
-    const { children } = props;
-    const { files } = useFileUpload();
-
+type ComponentProps = PropsWithChildren<{
+    files: IFileReader[];
+}>;
+function Component(props: ComponentProps) {
+    const { files, children } = props;
     const [fonts, setFonts] = useState<IFont[]>([]);
+    const [processOT, setProcessOT] = useState(true);
 
     const readOpentypeData = useCallback(async () => {
+        nProgress.start();
+        setProcessOT(true);
         const fonts: IFont[] = await Promise.all(
-            files.map(async (file) => {
+            files.map(async (file, i) => {
                 if (!file.fileUrl) return Promise.reject();
                 const font = await load(file.fileUrl as string);
                 const names = parseNames(font);
-                const metrics = {
-                    unitsPerEm: font.unitsPerEm
-                };
-                return Promise.resolve({ names, metrics, url: file.fileUrl });
+                const glyphs = await ParseGlyphs(font);
+                const metrics = parseMetrics(font);
+                return Promise.resolve({
+                    names,
+                    glyphs,
+                    metrics,
+                    url: file.fileUrl
+                    // binary: binaries[i]
+                });
             })
         );
 
+        const filterItalic = fonts
+            .filter((item) => item.names.italicAngle !== 0)
+            .sort((a, b) => a.names.fontFace.fontWeight.value - b.names.fontFace.fontWeight.value);
+        const filterRoman = fonts
+            .filter((item) => item.names.italicAngle === 0)
+            .sort((a, b) => a.names.fontFace.fontWeight.value - b.names.fontFace.fontWeight.value);
+        const filterFontStretch = filterRoman
+            .concat(filterItalic)
+            .sort(
+                (a, b) =>
+                    a.names.fontFace.fontStretch.percentOfNormal -
+                    b.names.fontFace.fontStretch.percentOfNormal
+            );
+
+        await installFontToTheDOM(filterFontStretch);
+
+        setFonts(filterFontStretch);
+
+        nProgress.done();
+        setProcessOT(false);
         return fonts;
     }, [files]);
 
     useEffect(() => {
-        if (files.length === 0) return;
+        toast.promise(
+            readOpentypeData(),
+            {
+                loading: `Installing\n\n${files.map((item) => item.fileName).join(", ")}`,
+                success: (data) =>
+                    `Installed\n\n${data.map((item) => item.names.postScriptName).join(", ")}`,
+                error: "Cannot be install"
+            },
+            { success: { duration: 1000, icon: "🔥" } }
+        );
+    }, [files]);
 
-        readOpentypeData().then(async (res) => {
-            const filterItalic = res
-                .filter((item) => item.names.italicAngle !== 0)
-                .sort(
-                    (a, b) => a.names.fontFace.fontWeight.value - b.names.fontFace.fontWeight.value
-                );
-            const filterRoman = res
-                .filter((item) => item.names.italicAngle === 0)
-                .sort(
-                    (a, b) => a.names.fontFace.fontWeight.value - b.names.fontFace.fontWeight.value
-                );
-            const filterFontStretch = filterRoman
-                .concat(filterItalic)
-                .sort(
-                    (a, b) =>
-                        a.names.fontFace.fontStretch.percentOfNormal -
-                        b.names.fontFace.fontStretch.percentOfNormal
-                );
+    return (
+        <ContextOpentype.Provider value={{ fonts, processOT }}>
+            {processOT || !fonts || fonts.length === 0 ? (
+                <LayoutState style={{ backgroundColor: "var(--grid-color)" }}>
+                    <div style={{ fontSize: "4vw" }}>Reading Opentype...</div>
+                </LayoutState>
+            ) : (
+                children
+            )}
+        </ContextOpentype.Provider>
+    );
+}
 
-            // Install font file to DOM
-            await installFontToTheDOM(filterFontStretch);
-
-            setFonts(filterFontStretch);
-        });
-    }, [files, readOpentypeData]);
-
-    return <ContextOpentype.Provider value={{ fonts }}>{children}</ContextOpentype.Provider>;
+type ProviderOpentypeProps = PropsWithChildren<{ files?: IFileReader[] }>;
+export default function ProviderOpentype(props: ProviderOpentypeProps) {
+    const { children } = props;
+    const { files } = useFileUpload();
+    const memoizedFiles = useMemo(() => files, [files]);
+    return <Component files={memoizedFiles}>{children}</Component>;
 }
