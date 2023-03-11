@@ -1,8 +1,10 @@
 import type { DetailedHTMLProps, HTMLAttributes } from "react";
 import type { IFileReader } from "@/types/files";
-import { createContext, useCallback, useState } from "react";
+import { createContext, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { useRouter } from "next/router";
+import AccordionLinks from "./Accordion/AccordionLinks";
+import LayoutState from "./LayoutState";
 
 export type ContextFileUploadAttr = {
     files: IFileReader[];
@@ -40,20 +42,83 @@ export default function ProviderFileUpload(props: ProviderFileUploadProps) {
             })
         );
 
-    const onDrop = useCallback(async (files: File[]) => {
+    const onDrop = async (files: File[]) => {
         const urls: IFileReader[] = await fileReader(files).then((res) => res);
         setFiles(urls);
-    }, []);
+    };
 
-    const { getRootProps, isDragActive, isDragAccept, isDragReject } = useDropzone({
+    const {
+        getRootProps,
+        getInputProps,
+        isDragActive,
+        isDragAccept,
+        isDragReject,
+        isFileDialogActive,
+        fileRejections,
+        open
+    } = useDropzone({
         onDrop,
         multiple: true,
         accept: { "font/ttf": [], "font/otf": [], "application/font-woff": [] },
-        noClick: files.length !== 0
+        noClick: true,
+        noKeyboard: true
     });
 
+    if (files.length === 0)
+        return (
+            <main {...rest} {...getRootProps()}>
+                <input {...getInputProps()} />
+                <LayoutState
+                    style={{
+                        backgroundColor: isDragAccept
+                            ? "var(--grid-color)"
+                            : isDragReject
+                            ? "red"
+                            : isFileDialogActive
+                            ? "blue"
+                            : "initial"
+                    }}
+                >
+                    <div style={{ fontSize: "4vw" }}>
+                        {isDragAccept && <>All Files Accepted</>}
+                        {isDragReject && (
+                            <>
+                                Some File(s) Might Be Rejected
+                                <br />
+                                <em style={{ fontSize: "0.5em" }}>
+                                    (Only *.ttf, *.otf and *.woff fonts will be accepted)
+                                </em>
+                                <br />
+                                {fileRejections.map((item) => item.file.name).join(", ")}
+                            </>
+                        )}
+                        {!isDragActive && (
+                            <>
+                                Drag &amp; Drop Font(s)
+                                <br />
+                                <button
+                                    onClick={open}
+                                    style={{
+                                        appearance: "none",
+                                        border: "none",
+                                        font: "inherit",
+                                        cursor: "pointer",
+                                        background: "none",
+                                        textTransform: "inherit",
+                                        WebkitTextFillColor: "deeppink"
+                                    }}
+                                >
+                                    &rarr; Open File Dialog &larr;
+                                </button>
+                            </>
+                        )}
+                    </div>
+                </LayoutState>
+            </main>
+        );
     return (
         <ContextFileUpload.Provider value={{ files, isDragActive, isDragAccept, isDragReject }}>
+            <AccordionLinks />
             <main
                 {...rest}
                 {...getRootProps()}
@@ -61,10 +126,10 @@ export default function ProviderFileUpload(props: ProviderFileUploadProps) {
                     minHeight: "100vh",
                     borderLeft: "1px solid var(--grid-color)",
                     marginInline: isIndex
-                        ? "var(--grid-unit) calc((var(--grid-unit) * 3) - 1px)"
+                        ? "var(--accordion-link-width) calc((var(--accordion-link-width) * 3) - 1px)"
                         : isGlyphs
-                        ? "calc(var(--grid-unit) * 2) calc((var(--grid-unit) * 2) - 2px)"
-                        : "calc(var(--grid-unit) * 3) 0"
+                        ? "calc(var(--accordion-link-width) * 2) calc((var(--accordion-link-width) * 2) - 1px)"
+                        : "calc(var(--accordion-link-width) * 3 - 0px) calc(var(--accordion-link-width) - 1px)"
                 }}
             >
                 {children}
