@@ -1,13 +1,17 @@
 import type { CSSProperties } from "react";
 import { useMemo, useState } from "react";
 import { MouseParallaxContainer, MouseParallaxChild } from "react-parallax-mouse";
+import { useTheme } from "next-themes";
 import Head from "next/head";
+
+import { isValidUrl } from "@/libs/helpers";
 import useOpentypeData from "@/hooks/use-opentype-data";
+import useFont from "@/hooks/use-font";
+
 import Grid from "@/components/Grid";
 import Layout from "@/components/Layout";
-import { isValidUrl } from "@/libs/helpers";
-import useFont from "@/hooks/use-font";
-import ProofText from "@/components/Proofs/ProofText";
+import SectionHeader from "@/components/SectionHeader";
+import WebComp from "@/components/WebComp";
 
 function Interpolation() {
     const { fonts } = useOpentypeData();
@@ -17,11 +21,16 @@ function Interpolation() {
     const bahan = useMemo(() => {
         return state ? italics : romans;
     }, [state, romans, italics]);
+    const { resolvedTheme } = useTheme();
+    const isDark = !!(resolvedTheme && resolvedTheme === "dark");
     return (
         <div
             onClick={() => italics.length !== 0 && setState((prev) => !prev)}
-            style={{ position: "relative" }}
+            style={{ position: "relative", marginBottom: -1 }}
         >
+            <SectionHeader>
+                <div style={{ fontSize: "2em" }}>Interpolation</div>
+            </SectionHeader>
             <div
                 style={{
                     position: "absolute",
@@ -81,13 +90,14 @@ function Interpolation() {
                                     fontSize: "15vw",
                                     WebkitTextStroke: 1,
                                     WebkitTextStrokeColor: "var(--grid-color)",
-                                    WebkitTextFillColor: `hsla(70, 100%, 50%, ${colorInterpolation})`,
+                                    WebkitTextFillColor: isDark
+                                        ? `hsla(109, 10%, 32%, ${colorInterpolation})`
+                                        : `hsla(70, 100%, 50%, ${colorInterpolation})`,
                                     whiteSpace: "nowrap",
                                     userSelect: "none"
                                 }}
                             >
-                                {/* Adhesion */}
-                                {/* H—2 */}HO
+                                OHno
                             </div>
                             <div
                                 style={{
@@ -125,6 +135,7 @@ const tdStyle: CSSProperties = {
 export default function Home() {
     const { fonts } = useOpentypeData();
     const { chooseFont, font } = useFont();
+    const fontsIsEven = !!(fonts.length % 2);
     return (
         <>
             <Head>
@@ -138,126 +149,142 @@ export default function Home() {
                 <Grid direction="horizontal" paddingInline>
                     <Grid direction="vertical" style={{ minHeight: "100vh" }}>
                         <Interpolation />
-                        {/* <div style={{ height: "var(--grid-unit)", display: "flex", gap: "1em" }}>
-                            <button onClick={() => toast("Test")}>Test</button>
-                            <button onClick={() => toast.success("Success")}>Success</button>
-                            <button onClick={() => toast.error("Error")}>Error</button>
-                        </div> */}
-                        <div
-                            style={{
-                                backgroundColor: "var(--accents-1)",
-                                border: "1px solid var(--grid-color)"
-                            }}
-                        >
-                            <table>
-                                <thead>
-                                    <tr>
-                                        <th align="left">Index</th>
-                                        <th align="left">Family</th>
-                                        <th align="left">Sub Family</th>
-                                        <th align="left">Font Weight</th>
-                                        <th align="left">Font Stretch</th>
-                                        <th align="left">Designer(s)</th>
-                                        <th align="left">Manufacturer</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {font &&
-                                        fonts.map((item, i) => {
-                                            const onClick = () =>
-                                                chooseFont(item.names.postScriptName);
-                                            return (
-                                                <tr
-                                                    key={i}
-                                                    data-active={
-                                                        font.names.postScriptName ===
-                                                        item.names.postScriptName
-                                                    }
-                                                >
-                                                    <td
-                                                        onClick={onClick}
-                                                        style={tdStyle}
-                                                        align="center"
-                                                    >
-                                                        {i + 1}
-                                                    </td>
-                                                    <td onClick={onClick} style={tdStyle}>
-                                                        {item.names.family}
-                                                    </td>
-                                                    <td
-                                                        onClick={onClick}
-                                                        style={{
-                                                            fontFamily: item.names.postScriptName,
-                                                            ...tdStyle
-                                                        }}
-                                                    >
-                                                        {item.names.fontSubFamily}
-                                                    </td>
-                                                    <td
-                                                        onClick={onClick}
-                                                        style={{
-                                                            ...tdStyle,
-                                                            fontWeight:
-                                                                item.names.fontFace.fontWeight.value
-                                                        }}
-                                                    >
-                                                        {item.names.fontFace.fontWeight.value} —{" "}
-                                                        {item.names.fontFace.fontWeight.description}
-                                                    </td>
-                                                    <td onClick={onClick} style={tdStyle}>
-                                                        {
-                                                            item.names.fontFace.fontStretch
-                                                                .percentOfNormal
+                        <div>
+                            <SectionHeader>
+                                <div style={{ fontSize: "2em" }}>Font List</div>
+                            </SectionHeader>
+
+                            <div
+                                style={{
+                                    backgroundColor: "var(--accents-1)",
+                                    // marginBottom: fontsIsEven
+                                    //     ? "calc(var(--grid-unit) - 0px)"
+                                    //     : "calc(var(--grid-unit) / 2)",
+                                    marginTop: -1
+                                }}
+                            >
+                                <table
+                                    style={{
+                                        border: "1px solid var(--grid-color)",
+                                        marginBottom: -1
+                                    }}
+                                >
+                                    <thead>
+                                        <tr>
+                                            <th align="left">Index</th>
+                                            <th align="left">Family</th>
+                                            <th align="left">Sub Family</th>
+                                            <th align="left">Font Weight</th>
+                                            <th align="left">Font Stretch</th>
+                                            <th align="left">Designer(s)</th>
+                                            <th align="left">Manufacturer</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {font &&
+                                            fonts.map((item, i) => {
+                                                const onClick = () =>
+                                                    chooseFont(item.names.postScriptName);
+                                                return (
+                                                    <tr
+                                                        key={i}
+                                                        data-active={
+                                                            font.names.postScriptName ===
+                                                            item.names.postScriptName
                                                         }
-                                                        % —{" "}
-                                                        {
-                                                            item.names.fontFace.fontStretch
-                                                                .description
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        <a
-                                                            href={item.names.designerUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
+                                                    >
+                                                        <td
+                                                            onClick={onClick}
+                                                            style={tdStyle}
+                                                            align="center"
+                                                        >
+                                                            {i + 1}
+                                                        </td>
+                                                        <td onClick={onClick} style={tdStyle}>
+                                                            {item.names.family}
+                                                        </td>
+                                                        <td
+                                                            onClick={onClick}
                                                             style={{
-                                                                ...tdStyle,
-                                                                ...genCSS(
-                                                                    isValidUrl(
-                                                                        item.names.designerUrl || ""
-                                                                    )
-                                                                )
+                                                                fontFamily:
+                                                                    item.names.postScriptName,
+                                                                ...tdStyle
                                                             }}
                                                         >
-                                                            {item.names.designer}
-                                                        </a>
-                                                    </td>
-                                                    <td>
-                                                        <a
-                                                            href={item.names.manufacturerUrl}
-                                                            target="_blank"
-                                                            rel="noopener noreferrer"
+                                                            {item.names.fontSubFamily}
+                                                        </td>
+                                                        <td
+                                                            onClick={onClick}
                                                             style={{
                                                                 ...tdStyle,
-                                                                ...genCSS(
-                                                                    isValidUrl(
-                                                                        item.names
-                                                                            .manufacturerUrl || ""
-                                                                    )
-                                                                )
+                                                                fontWeight:
+                                                                    item.names.fontFace.fontWeight
+                                                                        .value
                                                             }}
                                                         >
-                                                            {item.names.manufacturer}
-                                                        </a>
-                                                    </td>
-                                                </tr>
-                                            );
-                                        })}
-                                </tbody>
-                            </table>
+                                                            {item.names.fontFace.fontWeight.value} —{" "}
+                                                            {
+                                                                item.names.fontFace.fontWeight
+                                                                    .description
+                                                            }
+                                                        </td>
+                                                        <td onClick={onClick} style={tdStyle}>
+                                                            {
+                                                                item.names.fontFace.fontStretch
+                                                                    .percentOfNormal
+                                                            }
+                                                            % —{" "}
+                                                            {
+                                                                item.names.fontFace.fontStretch
+                                                                    .description
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            <a
+                                                                href={item.names.designerUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                style={{
+                                                                    ...tdStyle,
+                                                                    ...genCSS(
+                                                                        isValidUrl(
+                                                                            item.names
+                                                                                .designerUrl || ""
+                                                                        )
+                                                                    )
+                                                                }}
+                                                            >
+                                                                {item.names.designer}
+                                                            </a>
+                                                        </td>
+                                                        <td>
+                                                            <a
+                                                                href={item.names.manufacturerUrl}
+                                                                target="_blank"
+                                                                rel="noopener noreferrer"
+                                                                style={{
+                                                                    ...tdStyle,
+                                                                    ...genCSS(
+                                                                        isValidUrl(
+                                                                            item.names
+                                                                                .manufacturerUrl ||
+                                                                                ""
+                                                                        )
+                                                                    )
+                                                                }}
+                                                            >
+                                                                {item.names.manufacturer}
+                                                            </a>
+                                                        </td>
+                                                    </tr>
+                                                );
+                                            })}
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
-                        {font && fonts.length !== 0 && <ProofText />}
+                        <WebComp />
                     </Grid>
                 </Grid>
             </Layout>
