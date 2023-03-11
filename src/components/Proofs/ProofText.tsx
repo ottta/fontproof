@@ -1,55 +1,126 @@
+import { useEffect, useState } from "react";
 import useFont from "@/hooks/use-font";
-import { BASIC_CHARACTERS } from "@/libs/text-proof";
-import textProof from "@/libs/text-proof.json";
-import FontSelector from "../FontSelector";
 
-export default function ProofText() {
+type ProofTextProps = {
+    title: string;
+    text: string;
+    defaultFontSize?: number;
+    defaultLineHeight?: number;
+};
+
+export default function ProofText(props: ProofTextProps) {
+    const { text, defaultFontSize = 16, defaultLineHeight = 1.2, title } = props;
     const { font } = useFont();
+    const [fontFamily, setFontFamily] = useState(font.names.postScriptName);
+    const [fontSize, setFontSize] = useState(defaultFontSize);
+
+    useEffect(() => {
+        setFontFamily(font.names.postScriptName);
+    }, [font]);
+
     return (
-        <div
-            style={{
-                padding: "var(--grid-unit) 0"
-            }}
-        >
+        <div>
             <div
                 style={{
-                    // height: "calc(var(--grid-unit) * 10)",
-                    backgroundColor: "var(--accents-1)",
-                    border: "1px solid var(--grid-color)",
-                    padding: "var(--grid-unit)",
                     display: "grid",
-                    gridTemplateColumns: "1fr 4fr",
-                    gap: "var(--site-padding)"
+                    gridTemplateColumns:
+                        "repeat(var(--grid-division),minmax(var(--grid-unit),1fr))",
+                    marginBottom: -1
                 }}
             >
-                <aside>
-                    <div style={{ position: "sticky", top: 0, padding: "var(--grid-unit) 0" }}>
-                        <FontSelector />
-                    </div>
-                </aside>
-                <div
+                <aside
                     style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "var(--grid-unit)",
-                        fontFamily: `"${font.names.postScriptName}", Times New Roman`,
-                        fontWeight: font.names.fontFace.fontWeight.value,
-                        fontStyle: font.names.fontFace.fontStyle,
-                        fontStretch: `${font.names.fontFace.fontStretch.percentOfNormal}%`,
-                        // whiteSpace: "pre-wrap",
-                        wordBreak: "break-all"
+                        gridColumnStart: 1,
+                        gridColumnEnd: "span calc(var(--grid-division)/4 + 2)",
+                        padding: "var(--site-padding)"
                     }}
                 >
                     <div
-                        // dangerouslySetInnerHTML={{ __html: textProof.Spacing["basic-set"] }}
-                        style={{ fontSize: "5vw" }}
+                        style={{
+                            position: "sticky",
+                            top: "calc(var(--grid-unit) + var(--site-padding))",
+                            padding: "var(--site-padding)",
+                            backgroundColor: "var(--accents-1)",
+                            border: "1px solid var(--grid-color)",
+                            boxShadow: "0 0 1em -0.25em var(--grid-color)"
+                        }}
                     >
-                        {BASIC_CHARACTERS.join("")}
+                        <div>
+                            <div style={{ fontFeatureSettings: `"tnum"` }}>
+                                {fontSize}px – {fontSize * 0.75}pt
+                            </div>
+                            <input
+                                type="range"
+                                min={8}
+                                max={96}
+                                step={2}
+                                value={fontSize}
+                                onChange={(e) => setFontSize(e.target.valueAsNumber)}
+                            />
+                        </div>
                     </div>
-                    <div dangerouslySetInnerHTML={{ __html: textProof.Spacing.spacing }} />
-                    <div dangerouslySetInnerHTML={{ __html: textProof.Kerning.kerning }} />
-                    <div dangerouslySetInnerHTML={{ __html: textProof.Kerning.furniture }} />
-                    <div dangerouslySetInnerHTML={{ __html: textProof.Kerning.trio }} />
+                </aside>
+
+                <div
+                    style={{
+                        padding: "var(--site-padding)",
+                        gridColumnStart: "calc(var(--grid-division)/4 + 3)",
+                        gridColumnEnd: "calc(var(--grid-division) + 1)"
+                    }}
+                >
+                    <div
+                        style={{
+                            position: "relative",
+                            display: "flex",
+                            flexDirection: "column",
+                            gap: "var(--grid-unit)",
+                            fontFamily: `"${fontFamily}", Times New Roman`,
+                            wordBreak: "break-word",
+                            overflow: "hidden",
+                            // aspectRatio: "620/877", // A4 Paper Size
+                            aspectRatio: "877/620", // A4 Paper Size
+                            boxShadow: "0 0 1em -0.25em var(--grid-color)",
+                            padding: "calc(var(--grid-unit) * 1.5) var(--grid-unit)",
+                            backgroundColor: "var(--accents-1)",
+                            border: "1px solid var(--grid-color)"
+                        }}
+                    >
+                        <div
+                            style={{
+                                position: "absolute",
+                                top: 0,
+                                left: "var(--grid-unit)",
+                                right: "var(--grid-unit)",
+                                height: "var(--grid-unit)",
+                                display: "flex",
+                                alignItems: "flex-end",
+                                justifyContent: "space-between"
+                            }}
+                        >
+                            <div>{fontFamily}</div>
+                            <div style={{ fontSize: "0.75em" }}>
+                                {fontSize}px – {fontSize * 0.75}pt
+                            </div>
+                        </div>
+
+                        <div style={{ fontSize }} dangerouslySetInnerHTML={{ __html: text }} />
+
+                        <div
+                            style={{
+                                position: "absolute",
+                                bottom: 0,
+                                left: "var(--grid-unit)",
+                                right: "var(--grid-unit)",
+                                height: "var(--grid-unit)",
+                                display: "flex",
+                                alignItems: "flex-start"
+                            }}
+                        >
+                            <div>
+                                &copy;{font.names.manufacturer || font.names.designer || "Unknown"}
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
