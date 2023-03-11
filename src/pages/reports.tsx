@@ -33,7 +33,7 @@ export default function Page() {
 
     useEffect(() => {
         getMissingGlyphs();
-    }, [font]);
+    }, [getMissingGlyphs]);
 
     return (
         <Layout>

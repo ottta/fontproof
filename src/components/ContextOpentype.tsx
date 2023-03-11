@@ -112,7 +112,7 @@ function Component(props: ComponentProps) {
             },
             { success: { duration: 1000, icon: "🔥" } }
         );
-    }, [files]);
+    }, [files, readOpentypeData]);
 
     return (
         <ContextOpentype.Provider value={{ fonts, processOT }}>
