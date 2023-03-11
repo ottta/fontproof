@@ -7,12 +7,13 @@ type ContextFontAttr = {
     font: IFont;
     chooseFont: (candidate: string) => void;
 };
-type ProviderFontProps = PropsWithChildren<{}>;
+type ProviderFontProps = PropsWithChildren<{ fonts?: IFont[] }>;
 
 export const ContextFont = createContext<ContextFontAttr>(undefined!);
-export default function ProviderFont(props: ProviderFontProps) {
-    const { children } = props;
-    const { fonts } = useOpentypeData();
+
+type ComponentProps = PropsWithChildren<{ fonts: IFont[] }>;
+function Component(props: ComponentProps) {
+    const { children, fonts } = props;
     const [font, setFont] = useState<IFont>(fonts[0]);
 
     const chooseFont = useCallback(
@@ -29,4 +30,11 @@ export default function ProviderFont(props: ProviderFontProps) {
     }, [fonts]);
 
     return <ContextFont.Provider value={{ font, chooseFont }}>{children}</ContextFont.Provider>;
+}
+
+export default function ProviderFont(props: ProviderFontProps) {
+    const { children } = props;
+    const { fonts } = useOpentypeData();
+    if (!fonts || fonts.length === 0) return <div>No Fonts</div>;
+    return <Component fonts={fonts}>{children}</Component>;
 }
