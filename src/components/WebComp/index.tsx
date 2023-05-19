@@ -105,7 +105,7 @@ function WebButton(props: WebButtonProps) {
 }
 
 export default function WebComp() {
-    const buttonText = "Åmigoś";
+    const buttonText = "Àmigoś";
     return (
         <div>
             <SectionHeader>
