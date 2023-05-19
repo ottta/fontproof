@@ -70,7 +70,7 @@ export default function Page() {
 
                                     <div>
                                         <ProofText
-                                            title="Basic Characters"
+                                            title="ASCII"
                                             text={BASIC_CHARACTERS.join("")}
                                             defaultFontSize={56}
                                         />
@@ -80,13 +80,13 @@ export default function Page() {
                                             defaultFontSize={56}
                                         />
                                         <ProofText
-                                            title="Hamburgedfontstiv Spacing"
-                                            text={texts.Hamburgers["hamburged-spacing"]}
+                                            title="Spacing"
+                                            text={texts.Spacing.spacing}
                                             defaultFontSize={16}
                                         />
                                         <ProofText
-                                            title="Hamburgedfontstiv Trio"
-                                            text={texts.Hamburgers["hamburged-trio"]}
+                                            title="Kerning"
+                                            text={texts.Kerning.kerning}
                                             defaultFontSize={16}
                                         />
                                     </div>
