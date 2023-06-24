@@ -12,6 +12,7 @@ import Grid from "@/components/Grid";
 import Layout from "@/components/Layout";
 import SectionHeader from "@/components/SectionHeader";
 import WebComp from "@/components/WebComp";
+import TextMetric from "@/components/TextMetric";
 
 function Interpolation() {
     const { fonts } = useOpentypeData();
@@ -285,6 +286,7 @@ export default function Home() {
                         </div>
 
                         <WebComp />
+                        {/* <TextMetric /> */}
                     </Grid>
                 </Grid>
             </Layout>

@@ -28,3 +28,14 @@ export const BASIC_CHARACTERS = capitalLetter.concat(
     genPunc3,
     genPunc4
 );
+
+export const PROOF_HAMBURGERS = [
+    {
+        key: "hamburgedfontstive",
+        value: "HAMBURGEDFONTSIVhamburgedfontsiv"
+    },
+    {
+        key: "hamburged-spacing",
+        value: "HHAHOAOO HHBHOBOO HHDHODOO HHEHOEOO HHFHOFOO HHGHOGOO HHHHOHOO HHIHOIOO HHMHOMOO HHNHONOO HHOHOOOO HHRHOROO HHSHOSOO HHTHOTOO HHUHOUOO HHVHOVOO hhahoaoo hhbhoboo hhdhodoo hhehoeoo hhfhofoo hhghogoo hhhhohoo hhihoioo hhlholoo hhmhomoo hhnhonoo hhohoooo hhrhoroo hhshosoo hhthotoo hhuhouoo hhvhovoo"
+    }
+];
