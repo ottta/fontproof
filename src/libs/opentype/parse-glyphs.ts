@@ -10,11 +10,16 @@ async function svgGlyphs(glyphs: Glyph[], vmx: IMetric) {
     const width = 420;
 
     // Find highest ascender
-    const highestAscender = Math.max(vmx.yMax, vmx.ascender, vmx.sTypoAscender, vmx.usWinAscent);
+    const highestAscender = Math.max(
+        // vmx.yMax,
+        vmx.ascender,
+        vmx.sTypoAscender,
+        vmx.usWinAscent
+    );
 
     // Find deepest descender
     const deepestDescender = Math.min(
-        vmx.yMin,
+        // vmx.yMin,
         vmx.descender,
         vmx.sTypoDescender,
         // Convert to negative value since usWinDescent has positive value

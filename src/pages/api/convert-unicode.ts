@@ -25,7 +25,7 @@ const blockIntegers = arrayBlock.map((item) => {
 });
 
 function findBlock(code: number) {
-    const selected = blockIntegers.find((item) => item.start <= code && item.end > code);
+    const selected = blockIntegers.find((item) => item.start <= code && item.end >= code);
     if (!selected) return "Unknown Block";
     return selected.name;
 }

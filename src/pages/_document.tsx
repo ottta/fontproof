@@ -7,9 +7,9 @@ export default function Document() {
                 <title>Fontproof by Unforma Club</title>
                 <link
                     rel="preload"
-                    type="font/ttf"
+                    type="font/woff2"
                     as="font"
-                    href="https://font.unforma.club/files/Olig-Bold.ttf"
+                    href="/fonts/Ordinal[slnt,wght].woff2"
                     crossOrigin="anonymous"
                 />
             </Head>

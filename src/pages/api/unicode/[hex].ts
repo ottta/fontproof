@@ -25,20 +25,18 @@ const blockIntegers = arrayBlock.map((item) => {
 });
 
 function findBlock(code: number) {
-    const selected = blockIntegers.find((item) => item.start <= code && item.end > code);
+    const selected = blockIntegers.find((item) => item.start <= code && item.end >= code);
     if (!selected) return "Unknown Block";
     return selected.name;
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
-    const hex = req.query.hex as string;
+    const hexs = req.body as string[];
 
-    if (!hex) return res.status(400).json("Unicode hexadecimal must be defined");
+    if (!hexs || hexs.length <= 0)
+        return res.status(400).json("Unicode hexadecimal must be defined");
 
     try {
-        // Split query hex to array of string i.e [0041,0042,0043]
-        const hexs = hex.split(",");
-
         const filteredHexs = hexs.map((item) =>
             // Find hex inside string i.e 0041
             // `0041;LATIN CAPITAL LETTER A;Lu;0;L;;;;;N;;;;0061;`

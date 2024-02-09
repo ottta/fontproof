@@ -1,45 +1,46 @@
-import type { IUnicodeData } from "@/types/unicode";
-import { useCallback, useEffect, useState } from "react";
-import GFLatinUnicode from "@/libs/GF-Latin-Unicode.json";
-import generateUnicodeData from "@/libs/helper/generateUnicodeData";
-import useFont from "@/hooks/use-font";
+// import type { IUnicodeData } from "@/types/unicode";
+// import { useCallback, useEffect, useState } from "react";
+// import GFLatinUnicode from "@/libs/GF-Latin-Unicode.json";
+// import generateUnicodeData from "@/libs/helper/generateUnicodeData";
+// import useFont from "@/hooks/use-font";
 import Grid from "@/components/Grid";
 import Layout from "@/components/Layout";
-import SectionHeader from "@/components/SectionHeader";
+// import SectionHeader from "@/components/SectionHeader";
 
 export default function Page() {
-    const { font } = useFont();
-    const [missingUnicodes, setMissingUnicodes] = useState<IUnicodeData[]>([]);
+    // const { font } = useFont();
+    // const [missingUnicodes, setMissingUnicodes] = useState<IUnicodeData[]>([]);
 
-    const getMissingGlyphs = useCallback(async () => {
-        if (!font) return;
+    // const getMissingGlyphs = useCallback(async () => {
+    //     if (!font) return;
 
-        const unicodes = font.glyphs
-            .filter((item) => item.unicode?.codePoint)
-            .map((item) => {
-                return (
-                    "0x" +
-                    `${("0000" + item.unicode.codePoint?.toString(16)).slice(-4)}`.toUpperCase()
-                );
-            });
+    //     const unicodes = font.glyphs
+    //         .filter((item) => item.unicode?.codePoint)
+    //         .map((item) => {
+    //             return (
+    //                 "0x" +
+    //                 `${("0000" + item.unicode.codePoint?.toString(16)).slice(-4)}`.toUpperCase()
+    //             );
+    //         });
 
-        const complete = GFLatinUnicode.filter(
-            (item) => !unicodes.includes(item.split(" ")[0])
-        ).map((item) => item.split(" ")[0].replace("0x", ""));
+    //     const complete = GFLatinUnicode.filter(
+    //         (item) => !unicodes.includes(item.split(" ")[0])
+    //     ).map((item) => item.split(" ")[0].replace("0x", ""));
 
-        const missedChars = await generateUnicodeData(complete);
-        setMissingUnicodes(missedChars);
-    }, [font]);
+    //     const missedChars = await generateUnicodeData(complete);
+    //     setMissingUnicodes(missedChars);
+    // }, [font]);
 
-    useEffect(() => {
-        getMissingGlyphs();
-    }, [getMissingGlyphs]);
+    // useEffect(() => {
+    //     getMissingGlyphs();
+    // }, [getMissingGlyphs]);
 
     return (
         <Layout>
             <Grid direction="horizontal" paddingInline>
                 <Grid direction="vertical" style={{ minHeight: "100vh" }}>
-                    {missingUnicodes.length !== 0 ? (
+                    <div>Currently Unavailable</div>
+                    {/* {missingUnicodes.length !== 0 ? (
                         <div>
                             <SectionHeader>
                                 <div style={{ fontSize: "2em" }}>
@@ -86,7 +87,7 @@ export default function Page() {
                         </div>
                     ) : (
                         <div>Font files covering all basic latin</div>
-                    )}
+                    )} */}
                 </Grid>
             </Grid>
         </Layout>

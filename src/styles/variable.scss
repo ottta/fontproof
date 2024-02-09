@@ -41,8 +41,16 @@
     font-display: block;
 }
 
+@font-face {
+    font-family: "Ordinal";
+    src: url("/fonts/Ordinal[slnt,wght].woff2");
+    font-style: normal;
+    font-weight: 300 700;
+    font-display: block;
+}
+
 :root {
-    --font-display: "Olig";
+    --font-display: "Ordinal";
     --font-default: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu,
         Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
 
@@ -78,8 +86,9 @@
     --accordion-link-width: calc(var(--base-accordion-link-width) / (var(--grid-division) + 4));
 
     --grid-width: calc(
-        100vw - (var(--accordion-link-width) * 4) - var(--scrollbar-width) -
-            calc(var(--site-padding) * 2)
+        100vw - (var(--accordion-link-width) * 4) - var(--scrollbar-width) - calc(
+                var(--site-padding) * 2
+            )
     );
     --grid-column-width: calc(var(--grid-width) / var(--grid-division));
     --grid-unit: var(--grid-column-width);
