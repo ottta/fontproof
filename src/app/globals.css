@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  @apply border-neutral-300 dark:border-neutral-800;
+}
+
+body {
+  @apply bg-neutral-50 dark:bg-neutral-950;
+  @apply text-neutral-950 dark:text-neutral-50;
+}
+
+/* https://www.smashingmagazine.com/2021/12/create-custom-range-input-consistent-browsers */
+input[type="range"] {
+  appearance: none; /* Hides the slider so that custom slider can be made */
+  width: 100%; /* Specific width is required for Firefox. */
+  background: transparent; /* Otherwise white in Chrome */
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+  height: 1rem;
+  border-top: 0.47rem solid;
+  border-bottom: 0.47rem solid;
+  @apply border-neutral-50 dark:border-neutral-950;
+}
+
+input[type="range"]::-moz-range-track {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+  height: 1rem;
+  border-top: 0.47rem solid;
+  border-bottom: 0.47rem solid;
+  @apply border-neutral-50 dark:border-neutral-950;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+  @apply w-4 h-4;
+  @apply rounded-full;
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: -0.5rem; /* Centers thumb on the track */
+}
+
+input[type="range"]::-moz-range-thumb {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+  @apply w-4 h-4;
+  @apply rounded-full;
+  border: none;
+}
+
+input[type="range"]:focus,
+input[type="range"]:hover {
+  outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb,
+input[type="range"]:hover::-webkit-slider-thumb {
+  @apply border border-solid border-amber-500 dark:border-amber-800;
+  @apply outline-2 outline outline-amber-500 dark:outline-amber-800;
+  @apply outline-offset-2;
+}
+
+input[type="range"]:focus::-moz-range-thumb,
+input[type="range"]:hover::-moz-range-thumb {
+  @apply border border-solid border-amber-500 dark:border-amber-800;
+  @apply outline-2 outline outline-amber-500 dark:outline-amber-800;
+  @apply outline-offset-2;
+}
+
+.__select {
+  @apply relative;
+  @apply inline-flex;
+  @apply cursor-pointer;
+  @apply min-w-fit;
+  @apply border;
+  @apply bg-neutral-100 dark:bg-neutral-900;
+  @apply rounded;
+  @apply overflow-hidden;
+}
+
+.__select::after {
+  content: "";
+  mask-image: url("/expand_more.svg");
+  mask-position: center;
+  @apply bg-current;
+  @apply h-full;
+  @apply aspect-square;
+  @apply shrink-0;
+  @apply absolute;
+  @apply right-0;
+  @apply border-l;
+  @apply pointer-events-none touch-none;
+  @apply overflow-hidden;
+}
+
+.__select select {
+  @apply appearance-none;
+  @apply border-none;
+  @apply leading-normal;
+  @apply text-lg;
+  @apply pl-2;
+  @apply pr-8;
+  @apply w-full;
+  @apply h-full;
+  @apply outline-none;
+  @apply border-none;
+  @apply bg-transparent;
+  @apply flex items-center;
+  @apply cursor-pointer;
+}
+
+select:disabled {
+  @apply cursor-not-allowed;
+}
+
+.accordion {
+  @apply fixed;
+  @apply top-0;
+  @apply w-16;
+  @apply h-52;
+  @apply overflow-hidden;
+  @apply z-50;
+  @apply font-bold;
+  @apply flex justify-end;
+}
+
+/* .accordion[data-name="index"][data-position="left"] {
+  @apply left-4;
+} */
+
+.accordion[data-name="technicals"][data-position="right"] {
+  @apply right-32;
+}
+.accordion[data-name="reports"][data-position="right"] {
+  @apply right-16;
+}
+.accordion[data-name="settings"][data-position="right"] {
+  @apply right-0;
+}
+
+.accordion[data-name="technicals"][data-position="left"] {
+  @apply left-16;
+}
+.accordion[data-name="reports"][data-position="left"] {
+  @apply left-32;
+}
+/* .accordion[data-name="settings"][data-position="right"] {
+  @apply right-0;
+} */
