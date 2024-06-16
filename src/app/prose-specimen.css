@@ -1,0 +1,116 @@
+[data-specimen] > *:not(h1, h2, h3, h4, h5, h6) {
+  @apply my-[--line-space];
+  /* @apply leading-[--line-height]; */
+  @apply leading-[inherit];
+  orphans: 3;
+  widows: 3;
+}
+[data-specimen] > *:not(img, figure) {
+  @apply px-3;
+  /* @apply hyphens-auto; */
+}
+[data-specimen] > *:is(h1, h2, h3, h4, h5, h6) {
+  @apply relative;
+}
+[data-specimen] > *:is(h1, h2, h3, h4, h5, h6)::before {
+  @apply text-neutral-500;
+  @apply content-[attr(data-size)];
+  @apply px-1;
+  @apply absolute;
+  @apply left-0;
+  @apply -translate-x-full;
+  @apply text-2xs;
+  @apply font-sans;
+  @apply font-normal;
+  @apply rotate-180;
+  @apply whitespace-nowrap;
+
+  text-orientation: sideways;
+  writing-mode: vertical-lr;
+  font-feature-settings: "tnum";
+}
+[data-specimen] > h1 {
+  @apply !my-0;
+  @apply leading-[--title-1];
+}
+
+[data-specimen] > p {
+  @apply text-[1em];
+  @apply indent-6;
+}
+
+[data-specimen] li {
+  @apply my-0;
+}
+
+[data-specimen] > figure {
+  @apply relative;
+  @apply my-[--line-space];
+}
+
+[data-specimen] > figure:first-of-type img {
+  @apply h-[--image-1];
+}
+[data-specimen] > figure:last-of-type img {
+  @apply h-[--image-2];
+}
+
+[data-specimen] > figure > figcaption {
+  @apply my-[--caption-margin-block];
+  @apply px-3;
+  /* @apply leading-[--line-height]; */
+  @apply leading-[inherit];
+  @apply hidden;
+  font-size: 0.75em;
+}
+
+/* [data-specimen]
+  :where(h2 + *):not(:where([class~="not-prose"], [class~="not-prose"] *)) {
+  @apply !mt-[--line-space];
+} */
+
+[data-specimen] > blockquote {
+  /* @apply !my-0; */
+  /* @apply my-[--line-space]; */
+  @apply mt-[--line-space];
+  @apply !mb-0;
+  @apply text-neutral-400 dark:text-neutral-600;
+}
+
+/* [data-specimen] > blockquote p {
+  @apply py-[--line-space];
+  @apply relative;
+}
+[data-specimen] > blockquote p::before {
+  @apply absolute;
+  @apply left-0;
+  @apply -translate-x-full;
+} */
+
+[data-specimen] > table * {
+  @apply p-0;
+  /* @apply !leading-[--line-height]; */
+  @apply leading-[inherit];
+  @apply text-base;
+}
+
+[data-specimen] > table caption {
+  @apply text-left;
+  @apply px-3;
+  @apply font-bold;
+}
+
+[data-specimen] > table * > tr {
+  /* @apply -mb-px; */
+  /* @apply border-none; */
+}
+[data-specimen] > table * > tr > td {
+  @apply px-3;
+}
+
+[data-specimen] > *:first-child {
+  @apply !mt-0;
+}
+[data-specimen] > *:last-child {
+  @apply !mb-0;
+}

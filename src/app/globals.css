@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import "./prose-specimen.css";
+@import "./slider.css";
+
+html {
+  @apply 3xl:text-[18px];
+}
+
+* {
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+
+  -webkit-tap-highlight-color: transparent;
+
+  @apply border-neutral-200 dark:border-neutral-950;
+  @apply selection:bg-emerald-500/30;
+}
+
+body {
+  @apply bg-neutral-100 dark:bg-neutral-900;
+  @apply text-neutral-900 dark:text-neutral-200;
+
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* @media screen and (-webkit-min-device-pixel-ratio: 2),
+  screen and (min-resolution: 2dppx) {
+  body {
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-font-smoothing: antialiased;
+  }
+}
+
+[data-theme="dark"] {
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+} */
+
+svg {
+  @apply fill-current;
+}
+
+article {
+  @apply prose-img:w-full prose-img:m-0;
+  @apply prose-img:object-cover prose-img:object-center;
+  /* @apply prose-img:border prose-img:border-dotted; */
+  @apply prose-img:dark:brightness-75;
+}
+
+mark {
+  @apply bg-yellow-400/70 dark:bg-yellow-500/70;
+}
+
+[data-container] {
+  @apply w-full;
+  @apply max-w-screen-xl 2xl:max-w-screen-2xl 3xl:max-w-screen-3xl;
+  @apply mx-auto;
+  @apply px-4;
+}
+
+[data-grid],
+[data-layout="grid"] {
+  /* @apply grid grid-cols-6 lg:grid-cols-12 3xl:grid-cols-16; */
+  @apply grid grid-cols-6 lg:grid-cols-12;
+  @apply gap-1;
+}
+
+[data-blur]::before,
+[data-blur]::after {
+  @apply absolute;
+  @apply inset-0;
+  @apply -bottom-6;
+  @apply content-[""];
+}
+
+[data-blur="top-bottom"]::before {
+  backdrop-filter: blur(10px);
+  mask: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 10%,
+    rgba(0, 0, 0, 0) 33.33%
+  );
+}
+[data-blur="top-bottom"]::after {
+  backdrop-filter: blur(2px);
+  mask: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 1) 33.33%,
+    rgba(0, 0, 0, 0) 88.88%
+  );
+}
+[data-blur="bottom-top"]::before {
+  backdrop-filter: blur(10px);
+  mask: linear-gradient(to top, rgba(0, 0, 0, 1) 10%, rgba(0, 0, 0, 0) 33.33%);
+}
+[data-blur="bottom-top"]::after {
+  backdrop-filter: blur(2px);
+  mask: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 1) 33.33%,
+    rgba(0, 0, 0, 0) 88.88%
+  );
+}
+
+.font-feature::after,
+.font-feature::before {
+  font-feature-settings: initial !important;
+}
