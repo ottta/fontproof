@@ -1,0 +1,75 @@
+/* https://www.smashingmagazine.com/2021/12/create-custom-range-input-consistent-browsers */
+input[type="range"] {
+  /* Hides the slider so that custom slider can be made */
+  @apply appearance-none;
+  /* Specific width is required for Firefox. */
+  @apply w-full;
+  /* Otherwise white in Chrome */
+  @apply bg-transparent;
+  @apply cursor-pointer;
+}
+
+input[type="range"]::-webkit-slider-runnable-track {
+  /* @apply bg-neutral-300 dark:bg-neutral-800; */
+  @apply h-5;
+
+  /* border-top: 0.1rem solid;
+  border-bottom: 0.1rem solid; */
+  @apply border;
+  @apply border-solid;
+  @apply rounded-full;
+  /* @apply border-neutral-50 dark:border-neutral-950; */
+  @apply border-red-500;
+}
+
+input[type="range"]::-moz-range-track {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+  @apply h-5;
+
+  border-top: 0.47rem solid;
+  border-bottom: 0.47rem solid;
+  @apply border-neutral-50 dark:border-neutral-950;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+  /* @apply w-5 h-5; */
+  @apply rounded-full;
+  height: 18px;
+  @apply aspect-[2/1];
+  @apply border;
+  @apply border-solid;
+  -webkit-appearance: none; /* Override default look */
+  appearance: none;
+  margin-top: 0px; /* Centers thumb on the track */
+}
+
+input[type="range"]::-webkit-slider-thumb::after {
+  content: "**";
+}
+
+input[type="range"]::-moz-range-thumb {
+  @apply bg-neutral-300 dark:bg-neutral-800;
+  @apply w-5 h-5;
+  @apply rounded-full;
+  border: none;
+}
+
+/* input[type="range"]:focus,
+input[type="range"]:hover {
+  outline: none;
+}
+
+input[type="range"]:focus::-webkit-slider-thumb,
+input[type="range"]:hover::-webkit-slider-thumb {
+  @apply border border-solid border-amber-500 dark:border-amber-800;
+  @apply outline-2 outline outline-amber-500 dark:outline-amber-800;
+  @apply outline-offset-2;
+}
+
+input[type="range"]:focus::-moz-range-thumb,
+input[type="range"]:hover::-moz-range-thumb {
+  @apply border border-solid border-amber-500 dark:border-amber-800;
+  @apply outline-2 outline outline-amber-500 dark:outline-amber-800;
+  @apply outline-offset-2;
+} */
