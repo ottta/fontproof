@@ -104,13 +104,16 @@ function Comp({ font }: { font: CustomFont }) {
   return (
     <div
       className={cn(
-        "bg-neutral-50",
-        "dark:bg-neutral-900",
+        // "bg-neutral-50",
+        // "dark:bg-neutral-900",
         "min-h-screen",
-        // "relative",
       )}
     >
-      <div data-container data-grid className={cn("py-16", "pt-[25vh]")}>
+      <div
+        data-container
+        data-grid
+        className={cn("py-16", "items-center", "min-h-screen")}
+      >
         <div className={cn("col-span-3")}>
           <div className={cn("mb-6")}>
             <button

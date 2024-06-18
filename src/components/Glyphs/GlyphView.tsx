@@ -339,11 +339,17 @@ export default function GlyphView(props: GlyphViewProps) {
             ].map((item, i) => {
               const [key, value] = item;
               return (
-                <li key={i} className={cn("grid", "grid-cols-4")}>
+                <li
+                  key={i}
+                  className={cn(
+                    "grid",
+                    intens === "glyphs" ? "grid-cols-3" : "grid-cols-6",
+                  )}
+                >
                   <div className={cn("text-neutral-400")}>{key}</div>
                   <div
                     className={cn(
-                      "col-span-3",
+                      intens === "glyphs" ? "col-span-2" : "col-span-5",
                       key === "Feature" && "font-mono",
                     )}
                     style={

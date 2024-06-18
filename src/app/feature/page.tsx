@@ -273,7 +273,7 @@ export default function Page() {
   if (!font || !font.features) return null;
   return (
     <div data-container className={cn("pt-[33.33vh]", "pb-16")}>
-      <ul className={cn("flex", "flex-col", "gap-1")}>
+      <ul className={cn("flex", "flex-col", "gap-x-1", "gap-y-16")}>
         {font.features
           .sort((a, b) => a.tag.localeCompare(b.tag))
           .map((item, i) => (
