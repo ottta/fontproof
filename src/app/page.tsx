@@ -102,19 +102,9 @@ function Comp({ font }: { font: CustomFont }) {
     `</table>`,
   ]);
   return (
-    <div
-      className={cn(
-        // "bg-neutral-50",
-        // "dark:bg-neutral-900",
-        "min-h-screen",
-      )}
-    >
-      <div
-        data-container
-        data-grid
-        className={cn("py-16", "items-center", "min-h-screen")}
-      >
-        <div className={cn("col-span-3")}>
+    <div className={cn("bg-neutral-50", "dark:bg-neutral-900", "min-h-screen")}>
+      <div data-container data-grid className={cn("py-32", "min-h-screen")}>
+        {/* <div className={cn("col-span-3")}>
           <div className={cn("mb-6")}>
             <button
               onClick={toggle}
@@ -140,24 +130,56 @@ function Comp({ font }: { font: CustomFont }) {
               "dark:prose-invert",
             )}
           />
-        </div>
+        </div> */}
 
-        <div className={cn("col-span-9")}>
+        <div className={cn("col-span-6")}>
+          <div className={cn("px-3", "mb-4")}>Georgia</div>
           <article
-            data-specimen
+            // data-specimen
+            className={cn(
+              "font-georgia",
+              "max-w-none",
+              "prose",
+              "prose-neutral",
+              "dark:prose-invert",
+              "columns-2",
+              "gap-6",
+              "px-3",
+            )}
+            style={{
+              fontSize: 16,
+              lineHeight: "initial",
+              // lineHeight: isInitial ? "initial" : lineHeight,
+              // @ts-ignore
+              "--line-height": lineHeight,
+              "--line-space": lineHeight + "em",
+              "--image-1": lineHeight * aspects[3] + "em",
+              "--image-2": lineHeight * aspects[3] - 4 + "em",
+              "--title-1": (lineHeight / (2.25 / 2)).toFixed(2),
+            }}
+            dangerouslySetInnerHTML={{
+              __html: PARAGRAPH.join(""),
+            }}
+          />
+        </div>
+        <div className={cn("col-span-6")}>
+          <div className={cn("px-3", "mb-4")}>{font.names.fontFamily}</div>
+          <article
+            // data-specimen
             className={cn(
               "max-w-none",
               "prose",
               "prose-neutral",
               "dark:prose-invert",
-              "columns-3",
-              "gap-0",
+              "columns-2",
+              "gap-6",
+              "px-3",
             )}
             style={{
               fontSize: 16,
               fontFamily: `"${font.names.fontFamily}"`,
-              // lineHeight: "initial",
-              lineHeight: isInitial ? "initial" : lineHeight,
+              lineHeight: "initial",
+              // lineHeight: isInitial ? "initial" : lineHeight,
               // @ts-ignore
               "--line-height": lineHeight,
               "--line-space": lineHeight + "em",
