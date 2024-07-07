@@ -5,6 +5,9 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 import { UAParser } from "ua-parser-js";
 
+import { fontGeorgia } from "@/libs/fonts";
+import { cn } from "@/libs/utils";
+
 import Ruller from "@/components/Ruller";
 
 export const metadata: Metadata = {
@@ -32,6 +35,7 @@ export default function RootLayout({
       data-device={device.vendor}
       data-os={os.name}
       suppressHydrationWarning
+      className={cn(fontGeorgia.variable)}
     >
       <body>
         <Providers agent={agent}>
