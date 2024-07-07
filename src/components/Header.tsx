@@ -39,11 +39,11 @@ const staticLinks: { slug: string; label: string; icon: ReactNode }[] = [
   //   label: "Specimen",
   //   icon: <Icon icon="specimen" className={cn("h-4")} />,
   // },
-  // {
-  //   slug: "/test",
-  //   label: "Test",
-  //   icon: <Icon icon="specimen" className={cn("h-4")} />,
-  // },
+  {
+    slug: "/compare",
+    label: "Compare",
+    icon: <Icon icon="specimen" className={cn("h-4")} />,
+  },
 ];
 
 type HeaderProps = {

@@ -9,6 +9,11 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        georgia: ["var(--font-georgia)"],
+        // helvetica: ["var(--font-helvetica)"],
+        // optima: ["var(--font-optima)"],
+      },
       backgroundImage: {
         "pattern-chuck": `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAAXNSR0IArs4c6QAAABxJREFUGFdjvHLlyn8dHR1GBiiAMzAEYCoxVAAAYNUIBclC/GQAAAAASUVORK5CYII=")`,
         "pattern-chuck-invert": `url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAQAAAAECAYAAACp8Z5+AAAAAXNSR0IArs4c6QAAABxJREFUGFdj5OLi+v/t2zdGBiiAMzAEYCoxVAAATeUIBYbFTy8AAAAASUVORK5CYII=")`,
